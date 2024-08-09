@@ -37,11 +37,13 @@ This project contains a test suite built using Playwright to analyze and validat
 You can run the test suite using Playwright. The suite includes environment setup, running the tests, and cleanup.   
 
 ### Test Cases
-Analyze Data from events.log and Generate a Report
+
+**Analyze Data from events.log and Generate a Report**
 
 **Objective:** Reads the content of events.log, performs analysis, and generates data_analysis_report.txt.
 **Validation:** Verifies that both the log and report files exist and the report accurately summarizes the log data.
-Compare Data Analysis Report with events.log
+
+**Compare Data Analysis Report with events.log**
 
 **Objective:** Compares the contents of data_analysis_report.txt with events.log to ensure no discrepancies.
 **Validation:** Verifies that all entries in the report match the corresponding entries in the log file.
