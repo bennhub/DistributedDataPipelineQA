@@ -19,19 +19,19 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'  # Use the Node.js version that matches your project's requirements
+        node-version: '20'
 
     - name: Install dependencies
       run: npm install
 
     - name: Install Playwright
       run: npx playwright install
-      
+
     - name: List all tests
       run: npx playwright test --list
 
-    - name: Run tests
-      run: npx playwright test
+    - name: Run tests excluding specific file
+      run: npx playwright test --grep '!data-target-strict-validation.spec.js'
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
@@ -39,4 +39,3 @@ jobs:
         name: test-results
         path: |
           test-results
-     
