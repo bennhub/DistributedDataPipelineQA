@@ -1,2 +1,4 @@
 node_modules/
 data_analysis_report.txt
+output/
+test-results/
