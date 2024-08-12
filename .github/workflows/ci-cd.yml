@@ -17,7 +17,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Set up Node.js
-      uses: actions/checkout@v4
+      uses: actions/setup-node@v4
       with:
         node-version: '20'  # Use the Node.js version that matches your project's requirements
 
@@ -27,22 +27,9 @@ jobs:
     - name: Install Playwright
       run: npx playwright install
 
-    - name: Determine if specific test should run
-      id: check_test
-      run: |
-        if [ -f ".no-data-target-strict-validation" ]; then
-          echo "RUN_SPECIFIC_TEST=false" >> $GITHUB_ENV
-        else
-          echo "RUN_SPECIFIC_TEST=true" >> $GITHUB_ENV
-        fi
-
     - name: Run tests
       run: |
-        if [ "$RUN_SPECIFIC_TEST" = "true" ]; then
-          npx playwright test
-        else
-          npx playwright test --grep '!data-target-strict-validation'
-        fi
+        npx playwright test --grep '!data-target-strict-validation'
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
