@@ -19,7 +19,7 @@ test.describe("App startup and verification", () => {
     splitterErrors = "",
     agentErrors = "";
 
-  // Define file paths and directories
+  // Define paths for the directories and files used in the test
   const agentDir = path.resolve(__dirname, "agent");
   const monitoredFilePath = path.join(
     agentDir,
@@ -30,19 +30,17 @@ test.describe("App startup and verification", () => {
   const outputDir = path.resolve(__dirname, "output");
   const numLinesToCompare = 100;
 
-  // Ensure the output directory exists, create if not
+  // Ensure the output directory exists, create it if it doesn't
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir);
   }
 
-  // Setup tasks before running tests
   test.beforeAll(async () => {
-    // Check if the monitored file exists
+    // Verify the monitored file exists and is not empty
     if (!fs.existsSync(monitoredFilePath)) {
       throw new Error(`Monitored file ${monitoredFilePath} does not exist`);
     }
 
-    // Verify that the monitored file is not empty
     const fileData = fs.readFileSync(monitoredFilePath, "utf-8");
     if (fileData.length === 0) {
       throw new Error(`Monitored file ${monitoredFilePath} is empty`);
@@ -50,7 +48,7 @@ test.describe("App startup and verification", () => {
 
     console.log(`Monitored file ${monitoredFilePath} is ready for testing`);
 
-    // Start the target application and capture its output
+    // Start the 'target' process and capture its output and errors
     targetProcess = exec("node app.js target", {
       cwd: path.resolve(__dirname),
     });
@@ -60,10 +58,9 @@ test.describe("App startup and verification", () => {
     targetProcess.stderr.on("data", (data) => {
       targetErrors += data;
     });
-    // Wait for the target application to initialize
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for the process to start
 
-    // Start the splitter application and capture its output
+    // Start the 'splitter' process and capture its output and errors
     splitterProcess = exec("node app.js splitter", {
       cwd: path.resolve(__dirname),
     });
@@ -73,10 +70,9 @@ test.describe("App startup and verification", () => {
     splitterProcess.stderr.on("data", (data) => {
       splitterErrors += data;
     });
-    // Wait for the splitter application to initialize
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for the process to start
 
-    // Start the agent application and capture its output
+    // Start the 'agent' process and capture its output and errors
     agentProcess = exec("node app.js agent", { cwd: path.resolve(__dirname) });
     agentProcess.stdout.on("data", (data) => {
       agentOutput += data;
@@ -84,58 +80,56 @@ test.describe("App startup and verification", () => {
     agentProcess.stderr.on("data", (data) => {
       agentErrors += data;
     });
-    // Wait for the agent application to initialize
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for the process to start
   });
 
-  // Test to verify that events.log file is created and contains data
+  // Test to verify the creation and content of the events.log file
   test("should create events.log file with data", async () => {
     await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds
 
-    // Check if the events.log file exists
     const fileExists = fs.existsSync(logFilePath);
-    expect(fileExists).toBe(true); // Assert that the file exists
+    expect(fileExists).toBe(true); // Verify that the file exists
 
-    // Read the content of events.log and check if it has data
     const fileData = fs.readFileSync(logFilePath, "utf-8");
-    expect(fileData.length).toBeGreaterThan(0); // Assert that the file has some content
+    expect(fileData.length).toBeGreaterThan(0); // Verify that the file has some content
   });
 
-  // Test to compare the recent content of events.log with large_1M_events.log
+  // Test to verify content integrity between the last lines of events.log and large_1M_events.log
   test("should verify recent content integrity between events.log and large_1M_events.log", async () => {
     await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds
 
     try {
-        // Read the last N lines from both files for comparison
-        const eventLogTail = readLastLines(logFilePath, numLinesToCompare);
-        const largeEventLogTail = readLastLines(monitoredFilePath, numLinesToCompare);
+      // Read the last N lines from both log files
+      const eventLogTail = readLastLines(logFilePath, numLinesToCompare);
+      const largeEventLogTail = readLastLines(
+        monitoredFilePath,
+        numLinesToCompare
+      );
 
-        // Compare the tails of both files
-        if (eventLogTail !== largeEventLogTail) {
-            console.log("Mismatch found between recent log entries!");
-            console.log("events.log tail:", eventLogTail);
-            console.log("large_1M_events.log tail:", largeEventLogTail);
-        }
-
-        expect(eventLogTail).toBe(largeEventLogTail); // Explicitly fail the test if there's a mismatch
-
-        if (eventLogTail === largeEventLogTail) {
-            console.log("Recent log entries are identical");
-        }
+      // If there is a mismatch, log it to mismatch.txt
+      if (eventLogTail !== largeEventLogTail) {
+        const mismatchFilePath = path.join(outputDir, "mismatch.txt");
+        fs.writeFileSync(
+          mismatchFilePath,
+          `Mismatch found:\n\nEvent Log File:\n${eventLogTail}\n\nLarge Event Log File:\n${largeEventLogTail}`
+        );
+        console.log("Mismatch found and logged to output/mismatch.txt");
+      } else {
+        console.log("Recent log entries are identical");
+      }
     } catch (error) {
-        console.error("Error comparing log tails:", error);
-        throw error; // Rethrow the error to ensure test failure
+      console.error("Error comparing log tails:", error);
+      throw error;
     }
-});
+  });
 
-  // Teardown tasks after tests are complete
   test.afterAll(async () => {
-    // Kill all running processes
+    // Kill the processes if they are still running
     if (targetProcess) targetProcess.kill();
-    if (splitterProcess) targetProcess.kill();
-    if (agentProcess) targetProcess.kill();
+    if (splitterProcess) splitterProcess.kill();
+    if (agentProcess) agentProcess.kill();
 
-    // Save the outputs and errors from the processes to files for analysis
+    // Save the captured output and errors to the output directory
     fs.writeFileSync(path.join(outputDir, "target_output.log"), targetOutput);
     fs.writeFileSync(path.join(outputDir, "target_errors.log"), targetErrors);
     fs.writeFileSync(

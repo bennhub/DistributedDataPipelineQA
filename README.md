@@ -54,6 +54,31 @@ The test suite includes a cleanup process that stops the services and removes th
 ### Troubleshooting
 Ensure that your environment is correctly set up before running the tests. The services that generate the events.log file should be running.
 If the tests fail due to missing log or report files, check that the files are being generated correctly by your application.
+
+
+# Test File Name: basic-functionality.spec.js
+
+1. Test Cases Covered:
+App Startup and Verification:
+Starts the target, splitter, and agent applications.
+Verifies the existence and content of the events.log file.
+Output and Artifact Capture:
+Captures the standard output and error logs from each application.
+Saves these logs to specified files in the output directory.
+2. Purpose and Goals:
+Purpose:
+Ensure that the applications start correctly and interact as expected.
+Verify that the events.log file is created and contains data.
+Goals:
+Validate the basic functionality of the applications.
+Capture and store outputs and errors for troubleshooting and analysis.
+3. Setup & Teardown:
+Setup (beforeAll):
+Verifies that the necessary file (large_1M_events.log) exists and contains data.
+Starts the target, splitter, and agent processes while capturing their outputs and errors.
+Teardown (afterAll):
+Kills all processes.
+Writes captured outputs and errors to log files for later review.
  
    
    

@@ -20,14 +20,14 @@ test.describe("App startup and verification", () => {
     agentErrors = "";
 
   // Define file paths and directories
-  const agentDir = path.resolve(__dirname, "agent");
+  const agentDir = path.resolve(__dirname, "../agent");
   const monitoredFilePath = path.join(
     agentDir,
     "inputs",
     "large_1M_events.log"
   );
-  const logFilePath = path.resolve(__dirname, "events.log");
-  const outputDir = path.resolve(__dirname, "output");
+  const logFilePath = path.resolve(__dirname, "../events.log");
+  const outputDir = path.resolve(__dirname, "../output");
   const numLinesToCompare = 100;
 
   // Ensure the output directory exists, create if not
@@ -52,7 +52,7 @@ test.describe("App startup and verification", () => {
 
     // Start the target application and capture its output
     targetProcess = exec("node app.js target", {
-      cwd: path.resolve(__dirname),
+      cwd: path.resolve(__dirname, '../'),
     });
     targetProcess.stdout.on("data", (data) => {
       targetOutput += data;
@@ -65,7 +65,7 @@ test.describe("App startup and verification", () => {
 
     // Start the splitter application and capture its output
     splitterProcess = exec("node app.js splitter", {
-      cwd: path.resolve(__dirname),
+      cwd: path.resolve(__dirname, '../'),
     });
     splitterProcess.stdout.on("data", (data) => {
       splitterOutput += data;
@@ -77,7 +77,7 @@ test.describe("App startup and verification", () => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Start the agent application and capture its output
-    agentProcess = exec("node app.js agent", { cwd: path.resolve(__dirname) });
+    agentProcess = exec("node app.js agent", { cwd: path.resolve(__dirname, '../'), });
     agentProcess.stdout.on("data", (data) => {
       agentOutput += data;
     });
@@ -106,27 +106,24 @@ test.describe("App startup and verification", () => {
     await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds
 
     try {
-        // Read the last N lines from both files for comparison
-        const eventLogTail = readLastLines(logFilePath, numLinesToCompare);
-        const largeEventLogTail = readLastLines(monitoredFilePath, numLinesToCompare);
+      // Read the last N lines from both files for comparison
+      const eventLogTail = readLastLines(logFilePath, numLinesToCompare);
+      const largeEventLogTail = readLastLines(
+        monitoredFilePath,
+        numLinesToCompare
+      );
 
-        // Compare the tails of both files
-        if (eventLogTail !== largeEventLogTail) {
-            console.log("Mismatch found between recent log entries!");
-            console.log("events.log tail:", eventLogTail);
-            console.log("large_1M_events.log tail:", largeEventLogTail);
-        }
+      // Compare the tails of both files
+      expect(eventLogTail).toBe(largeEventLogTail); // Explicitly fail the test if there's a mismatch
 
-        expect(eventLogTail).toBe(largeEventLogTail); // Explicitly fail the test if there's a mismatch
-
-        if (eventLogTail === largeEventLogTail) {
-            console.log("Recent log entries are identical");
-        }
+      if (eventLogTail === largeEventLogTail) {
+        console.log("Recent log entries are identical");
+      }
     } catch (error) {
-        console.error("Error comparing log tails:", error);
-        throw error; // Rethrow the error to ensure test failure
+      console.error("Error comparing log tails:", error);
+      throw error; // Rethrow the error to ensure test failure
     }
-});
+  });
 
   // Teardown tasks after tests are complete
   test.afterAll(async () => {
@@ -152,7 +149,8 @@ test.describe("App startup and verification", () => {
     // Cleanup: Remove the events.log file and the output directory
     // Commented out to retain artifacts as per the objectives
     // Uncomment the following lines if you wish to clean up after the test run
-    //fs.unlinkSync(logFilePath); // Remove events.log
-    //fs.rmSync(outputDir, { recursive: true, force: true }); // Remove output directory and its contents
+    fs.unlinkSync(logFilePath); // Remove events.log
+    fs.rmSync(outputDir, { recursive: true, force: true }); // Remove output directory and its contents
+    
   });
 });
