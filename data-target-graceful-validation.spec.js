@@ -155,7 +155,7 @@ test.describe("App startup and verification", () => {
 
     // Cleanup: Remove the events.log file and the output directory
     // Uncomment the following lines if you wish to clean up after the test run
-    // fs.unlinkSync(logFilePath); // Remove events.log
+    fs.unlinkSync(logFilePath); // Remove events.log
     fs.rmSync(outputDir, { recursive: true, force: true }); // Remove output directory and its contents
   });
 });
