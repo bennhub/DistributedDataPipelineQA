@@ -84,7 +84,7 @@ test.describe("App startup and verification", () => {
   });
 
   // Test to verify that events.log file is created and contains data (Act & Assert)
-  test.skip("should create events.log file with data", async () => {
+  test("should create events.log file with data", async () => {
     await new Promise((resolve) => setTimeout(resolve, 5000)); // Act: Wait for 5 seconds
 
     // Act: Check if the events.log file exists
@@ -97,7 +97,7 @@ test.describe("App startup and verification", () => {
   });
 
   // Test to compare the recent content of events.log with large_1M_events.log (Act & Assert)
-  test.skip("should verify recent content integrity between events.log and large_1M_events.log", async () => {
+  test("should verify recent content integrity between events.log and large_1M_events.log", async () => {
     await new Promise((resolve) => setTimeout(resolve, 5000)); // Act: Wait for 5 seconds
 
     try {

@@ -99,7 +99,7 @@ test.afterAll(async () => {
 });
 
 // Describe a set of tests for data analysis and validation
-test.describe('Data Analysis and Validation Tests', () => {
+test('Data Analysis and Validation Tests', () => {
 
   // First test: Analyze data from events.log and generate a report
   test('Analyze data from events.log and generate a report', async () => {

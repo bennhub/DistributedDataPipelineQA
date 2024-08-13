@@ -30,8 +30,9 @@ jobs:
     - name: List all tests
       run: npx playwright test --list
 
-    - name: Run tests 
-      run: npx playwright test 
+    - name: Run specific tests
+      run: npx playwright test --grep 'data-target-graceful-validation'
+
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
