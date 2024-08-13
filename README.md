@@ -101,4 +101,50 @@ jobs:
  - **Purpose:** The GitHub Actions workflow is configured to run only the data-target-graceful-validation.spec.js test, as it is the primary test covering the main objectives of the project.
  - **Reasoning:** The other tests (data-analysis-report.spec.js and data-target-strict-validation.spec.js) are useful for additional validation but are not necessary for every CI run. By focusing on the main test, you ensure that the core functionality is always validated while keeping the CI process efficient.
 
+# Test Cases
+
+**1) `data-target-graceful-validation.spec.js`**
+
+### Purpose:
+Validate the creation and data consistency of the `events.log` file against `large_1M_events.log`. Ensure `events.log` is created, contains data, and that its last N lines match `large_1M_events.log`. Log mismatches for review.
+
+### Goal:
+1. Confirm the `events.log` file is created and contains data.
+2. Verify that the last N lines of `events.log` match those in `large_1M_events.log` to ensure data integrity.
+
+### Test Steps:
+
+1. **Setup and Initialization**:
+   - **Check File Existence**: Verify `large_1M_events.log` is present and non-empty.
+   - **Start Processes**: Launch `target`, `splitter`, and `agent` processes.
+   - **Capture Outputs**: Collect outputs and errors from each process.
+
+2. **Test Execution**:
+   - **Verify `events.log` Creation**:
+     - **Wait**: Allow processes to run.
+     - **Check File**: Ensure `events.log` exists and has content.
+   
+   - **Verify Content Integrity**:
+     - **Wait**: Allow additional time for logging.
+     - **Read and Compare**: Retrieve and compare the last N lines from both files.
+     - **Log Mismatches**: If discrepancies are found:
+       - Log a mismatch message to the console.
+       - Create `mismatch.txt` in `output` directory detailing the differences.
+
+3. **Teardown and Cleanup**:
+   - **Terminate Processes**: Kill running processes.
+   - **Save Logs**: Write process outputs and errors to `output` directory.
+   - **Cleanup Files**: Optionally delete `events.log` and `output` directory.
+
+### Expected Outcome:
+- **File Creation**: The events.log file should be created and contain data.
+- **Content Match**: The last N lines of events.log should match the last N lines of large_1M_events.log.
+- **Mismatch Handling**: If mismatches are detected:
+  - The console will log a message indicating the mismatch.
+  - A mismatch.txt file will be created in the output directory with details of the discrepancies for further analysis.
+- **Graceful Failure**: The test will gracefully handle mismatches by logging them and creating a report, allowing for easier identification and resolution of issues.
+
+**2) `data-target-strict-validation.spec.js`**
+
+
 
