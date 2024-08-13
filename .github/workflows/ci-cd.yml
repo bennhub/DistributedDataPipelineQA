@@ -30,8 +30,8 @@ jobs:
     - name: List all tests
       run: npx playwright test --list
 
-    - name: Run tests excluding specific file
-      run: npx playwright test --grep 'data-target-strict-validation.spec.js'
+    - name: Run tests 
+      run: npx playwright test 
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
