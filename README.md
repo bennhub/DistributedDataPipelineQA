@@ -103,7 +103,7 @@ jobs:
 
 # Test Cases
 
-#### **1) `data-target-graceful-validation.spec.js`**
+#### **1) Test Cases for `data-target-graceful-validation.spec.js`**
 
 ### Purpose:
 Validate the creation and data consistency of the `events.log` file against `large_1M_events.log`. Ensure `events.log` is created, contains data, and that its last N lines match `large_1M_events.log`. Log mismatches for review.
@@ -143,8 +143,86 @@ Validate the creation and data consistency of the `events.log` file against `lar
   - The console will log a message indicating the mismatch.
   - A mismatch.txt file will be created in the output directory with details of the discrepancies for further analysis.
 - **Graceful Failure**: The test will gracefully handle mismatches by logging them and creating a report, allowing for easier identification and resolution of issues.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#### **2) Test Cases for `data-target-strict-validation.spec.js`**
 
-#### **2) `data-target-strict-validation.spec.js`**
+### Purpose:
+Validate the creation and strict data consistency of the `events.log` file against `large_1M_events.log`. Ensure that `events.log` is created, contains data, and that its last N lines match exactly with `large_1M_events.log`. Fail the test if any discrepancy is found.
+
+### Goal:
+1. Confirm the `events.log` file is created and contains data.
+2. Strictly verify that the last N lines of `events.log` match those in `large_1M_events.log` to ensure exact data integrity.
+
+### Test Steps:
+
+1. **Setup and Initialization**:
+   - **Check File Existence**: Ensure `large_1M_events.log` is present and non-empty.
+   - **Start Processes**: Launch `target`, `splitter`, and `agent` processes.
+   - **Capture Outputs**: Collect outputs and errors from each process.
+
+2. **Test Execution**:
+   - **Verify `events.log` Creation**:
+     - **Wait**: Allow processes to run for 5 seconds.
+     - **Check File**: Ensure `events.log` exists and has content.
+   
+   - **Strict Content Integrity Verification**:
+     - **Wait**: Allow additional time for logging (another 5 seconds).
+     - **Read and Compare**: Retrieve and compare the last N lines from both files.
+     - **Strict Validation**: If discrepancies are found:
+       - Log a detailed error message.
+       - Fail the test immediately to prevent any false positives.
+
+3. **Teardown and Cleanup**:
+   - **Terminate Processes**: Kill all running processes (`target`, `splitter`, and `agent`).
+   - **Save Logs**: Write process outputs and errors to the `output` directory.
+   - **Cleanup Files**: Optionally delete `events.log` and the `output` directory.
+
+### Expected Outcome:
+- **File Creation**: `events.log` should be created and populated with data.
+- **Strict Content Match**: The last N lines of `events.log` must match exactly with `large_1M_events.log`. Any discrepancy will fail the test.
+- **Failure Handling**: Any mismatch results in a test failure, ensuring strict validation.
+- **Graceful Cleanup**: Logs are saved, and processes are terminated cleanly.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+#### **3) Test Cases for `data-analysis-report.spec.js`**
+
+### Purpose:
+Test the analysis of `events.log` and generation of `data_analysis_report.txt`, ensuring both files exist, contain data, and that the report accurately reflects the log data.
+
+### Goal:
+1. Confirm that `events.log` and `data_analysis_report.txt` are created and contain valid data.
+2. Validate that the data in `data_analysis_report.txt` matches exactly with `events.log`.
+
+### Test Steps:
+
+1. **Setup and Initialization**:
+   - **Start Processes**: Launch `target`, `splitter`, and `agent` processes.
+   - **Wait**: Allow processes to initialize (8 seconds).
+   - **Check File Existence**: Ensure `events.log` is present and non-empty.
+
+2. **Test Execution**:
+   - **Analyze Log Data**:
+     - **Read Log File**: Parse `events.log` to extract data.
+     - **Generate Report**: Write the log data into `data_analysis_report.txt`.
+     - **Verify File Creation**: Ensure both `events.log` and `data_analysis_report.txt` exist.
+   
+   - **Validation of Data Consistency**:
+     - **Ensure Files Exist**: Confirm the presence of `events.log` and `data_analysis_report.txt`.
+     - **Read and Compare**: Compare each line in the report with the log data.
+     - **Log Mismatches**: If discrepancies are found, log them and fail the test.
+
+3. **Teardown and Cleanup**:
+   - **Terminate Processes**: Kill running processes (`target`, `splitter`, `agent`).
+   - **Cleanup Files**: Remove `events.log` and any other temporary files.
+   - **Save Logs**: Write any errors or outputs to a log file.
+
+### Expected Outcome:
+- **File Creation**: Both `events.log` and `data_analysis_report.txt` should be created.
+- **Data Consistency**: Data in `data_analysis_report.txt` should match exactly with `events.log`.
+- **Failure Handling**: Any data mismatch should result in a test failure.
+- **Graceful Cleanup**: Processes are terminated, and files are cleaned up.
+
+
 
 
 
