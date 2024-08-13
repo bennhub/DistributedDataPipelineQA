@@ -4,13 +4,15 @@
 This repository contains automated test scripts for validating the data analysis and target data processing of a Node.js application. The scripts are written using Playwright and cover various scenarios to ensure data integrity and proper functionality of the applications.
 
 ## Test Scripts
-- `data-analysis-report.spec.js`: This script performs two key functions:
-1. It generates a data analysis report by reading from the `events.log` file, processing the data, and writing it into a `data_analysis_report.txt` file.
-2. It validates the generated report by comparing each entry in the report with the corresponding data in the `events.log` file to ensure accuracy. The test will fail if any discrepancies are found between the report and the log file.
 
 - `data-target-graceful-validation.spec.js`: This script checks for mismatches in the target data, generates a report if discrepancies are found, and continues execution without failing the test. It ensures that the validation process handles errors gracefully by reporting them instead of terminating the process.
 
 - `data-target-strict-validation.spec.js`: This script enforces strict validation of target data, ensuring absolute correctness by failing the test if any data mismatch is detected.
+
+- `data-analysis-report.spec.js`: This script performs two key functions:
+1. It generates a data analysis report by reading from the `events.log` file, processing the data, and writing it into a `data_analysis_report.txt` file.
+2. It validates the generated report by comparing each entry in the report with the corresponding data in the `events.log` file to ensure accuracy. The test will fail if any discrepancies are found between the report and the log file.
+
 
 ### Prerequisites
 
@@ -40,6 +42,8 @@ You can run the tests using Playwright. Note that each test must be run individu
 3. **Cleanup**: Terminates all running processes and removes any generated files to reset the environment for the next test.
 
 ### Instructions for Running Each Test Individually:
+Note that each test must be run individually, not as a complete suite
+
 - To run a test individually, use the following command in your terminal:
 
 - `npx playwright test tests/data-analysis-report.spec.js`
