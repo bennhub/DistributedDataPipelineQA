@@ -100,3 +100,5 @@ jobs:
 ## Explanation
  - **Purpose:** The GitHub Actions workflow is configured to run only the data-target-graceful-validation.spec.js test, as it is the primary test covering the main objectives of the project.
  - **Reasoning:** The other tests (data-analysis-report.spec.js and data-target-strict-validation.spec.js) are useful for additional validation but are not necessary for every CI run. By focusing on the main test, you ensure that the core functionality is always validated while keeping the CI process efficient.
+
+
