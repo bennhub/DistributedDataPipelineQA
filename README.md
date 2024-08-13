@@ -49,7 +49,7 @@ You can run the tests using Playwright. Note that each test must be run individu
 ## GitHub Actions Integration
 This project uses GitHub Actions for Continuous Integration (CI). The workflow is set up to run specific tests to validate the core functionality of the application.
 
-# Running Specific Tests in GitHub Actions
+## Running Specific Tests in GitHub Actions
 In the GitHub Actions workflow, you can run only the main test (**data-target-graceful-validation.spec.js**) to ensure that the core objectives are being met. The other tests are supplementary and provide additional validation.
 
 Here's how the test run is configured in the GitHub Actions workflow:
