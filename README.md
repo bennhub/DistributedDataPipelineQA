@@ -147,6 +147,9 @@ Validate the creation and data consistency of the `events.log` file against `lar
   - The console will log a message indicating the mismatch.
   - A mismatch.txt file will be created in the output directory with details of the discrepancies for further analysis.
 - **Graceful Failure**: The test will gracefully handle mismatches by logging them and creating a report, allowing for easier identification and resolution of issues.
+
+![Alt text](https://raw.githubusercontent.com/bennhub/DistributedDataPipelineQA/main/images/graceful-expected.jpg)
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### **2) Test Cases for `data-target-strict-validation.spec.js`**
 
@@ -187,6 +190,9 @@ Validate the creation and strict data consistency of the `events.log` file again
 - **Failure Handling**: Any mismatch results in a test failure, ensuring strict validation.
 - **Graceful Cleanup**: Logs are saved, and processes are terminated cleanly.
 
+![Alt text](https://raw.githubusercontent.com/bennhub/DistributedDataPipelineQA/main/images/strict_validation.jpg)
+
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### **3) Test Cases for `data-analysis-report.spec.js`**
 
@@ -225,6 +231,9 @@ Test the analysis of `events.log` and generation of `data_analysis_report.txt`, 
 - **Data Consistency**: Data in `data_analysis_report.txt` should match exactly with `events.log`.
 - **Failure Handling**: Any data mismatch should result in a test failure.
 - **Graceful Cleanup**: Processes are terminated, and files are cleaned up.
+
+![Alt text](https://raw.githubusercontent.com/bennhub/DistributedDataPipelineQA/main/images/analysis_report.jpg)
+
 
 
 
