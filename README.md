@@ -109,6 +109,10 @@ jobs:
 
 #### **1) Test Cases for `data-target-graceful-validation.spec.js`**
 
+Command to run: 
+- `npx playwright test data-target-graceful-validation.spec.js`
+
+
 ### Purpose:
 Validate the creation and data consistency of the `events.log` file against `large_1M_events.log`. Ensure `events.log` is created, contains data, and that its last N lines match `large_1M_events.log`. If mismatches are detected - the console will log a message indicating the mismatch and a mismatch.txt file will be created in the output directory with details of the discrepancies for further analysis.
 
@@ -153,6 +157,9 @@ Validate the creation and data consistency of the `events.log` file against `lar
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### **2) Test Cases for `data-target-strict-validation.spec.js`**
 
+Command to run: 
+- `npx playwright test data-target-strict-validation.spec.js`
+
 ### Purpose:
 Validate the creation and strict data consistency of the `events.log` file against `large_1M_events.log`. Ensure that `events.log` is created, contains data, and that its last N lines match exactly with `large_1M_events.log`. Fail the test if any discrepancy is found.
 
@@ -195,6 +202,9 @@ Validate the creation and strict data consistency of the `events.log` file again
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### **3) Test Cases for `data-analysis-report.spec.js`**
+
+Command to run: 
+- `npx playwright test data-analysis-report.spec.js`
 
 ### Purpose:
 Test the analysis of `events.log` and generation of `data_analysis_report.txt`, ensuring both files exist, contain data, and that the report accurately reflects the log data.
