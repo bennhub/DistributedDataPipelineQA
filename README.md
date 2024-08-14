@@ -3,7 +3,7 @@
 ## Overview
 This repository contains automated test scripts for validating the data analysis and target data processing of a Node.js application. The scripts are written using Playwright and cover various scenarios to ensure data integrity and proper functionality of the applications.
 
-## The Setup to test
+## The setup to test
 ![Alt text](https://raw.githubusercontent.com/bennhub/DistributedDataPipelineQA/main/images/Setup.jpg)
 
 ## Test Scripts
