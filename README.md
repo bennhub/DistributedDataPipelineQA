@@ -4,7 +4,7 @@
 This repository contains automated test scripts for validating the data analysis and target data processing of a Node.js application. The scripts are written using Playwright and cover various scenarios to ensure data integrity and proper functionality of the applications.
 
 ## The setup to test
-![Alt text](https://raw.githubusercontent.com/bennhub/DistributedDataPipelineQA/main/images/Setup.jpg)
+![Alt text](https://raw.githubusercontent.com/bennhub/DistributedDataPipelineQA/main/images/_Setup.jpg)
 
 ## Test Scripts
 - `data-target-graceful-validation.spec.js`: This script checks for mismatches in the target data, generates a report if discrepancies are found, and continues execution without failing the test. It ensures that the validation process handles errors gracefully by reporting them instead of terminating the process.
