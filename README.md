@@ -110,7 +110,7 @@ jobs:
 #### **1) Test Cases for `data-target-graceful-validation.spec.js`**
 
 ### Purpose:
-Validate the creation and data consistency of the `events.log` file against `large_1M_events.log`. Ensure `events.log` is created, contains data, and that its last N lines match `large_1M_events.log`. Log mismatches for review.
+Validate the creation and data consistency of the `events.log` file against `large_1M_events.log`. Ensure `events.log` is created, contains data, and that its last N lines match `large_1M_events.log`. If mismatches are detected - the console will log a message indicating the mismatch and a mismatch.txt file will be created in the output directory with details of the discrepancies for further analysis.
 
 ### Goal:
 1. Confirm the `events.log` file is created and contains data.
