@@ -98,52 +98,38 @@ test.afterAll(async () => {
   }
 });
 
-// Describe a set of tests for data analysis and validation
-test('Data Analysis and Validation Tests', () => {
+// Test: Analyze data from events.log, generate a report, and validate
+test('Analyze data from events.log, generate a report, and validate', async () => {
+  // ARRANGE: Ensure that necessary files are present
+  const logLines = readAndParseLogFile(); // Read the log file data
 
-  // First test: Analyze data from events.log and generate a report
-  test('Analyze data from events.log and generate a report', async () => {
-    // ARRANGE: Ensure that necessary files are present
-    const logLines = readAndParseLogFile(); // Read the log file data
+  // ACT: Write the log data into the report file
+  writeReportFile(logLines);
+  console.log(`Data analysis report generated at: ${paths.report}`);
 
-    // ACT: Write the log data into the report file
-    writeReportFile(logLines);
-    console.log(`Data analysis report generated at: ${paths.report}`);
-    
-    // ASSERT: Check that both the log file and the report file exist
-    ensureFilesExist([
-      { path: paths.log, shouldExist: true }, // events.log should exist
-      { path: paths.report, shouldExist: true } // data_analysis_report.txt should exist
-    ]);
+  // ASSERT: Check that both the log file and the report file exist
+  ensureFilesExist([
+    { path: paths.log, shouldExist: true }, // events.log should exist
+    { path: paths.report, shouldExist: true } // data_analysis_report.txt should exist
+  ]);
+
+  // Read and parse both the log file and the report file for validation
+  const reportData = fs.readFileSync(paths.report, 'utf-8').split('\n').filter(line => line.trim());
+
+  // Convert log data into a set for efficient lookup
+  const logDataSet = new Set(logLines);
+
+  // Compare each line in the report with the log data
+  reportData.forEach(line => {
+    const content = line.replace(/Line \d+: /, ''); // Remove line number prefix from report
+    if (!logDataSet.has(content)) {
+      // If a line in the report does not match the log data, log the mismatch and fail the test
+      console.log(`Mismatch found: ${line}`);
+      expect(true).toBe(false); // Fail the test
+    }
   });
 
-  // Second test: Compare data analysis report with events.log
-  test('Compare data analysis report with events.log', async () => {
-    // ARRANGE: Ensure that the log file and report file exist
-    ensureFilesExist([
-      { path: paths.log, shouldExist: true }, // events.log should exist
-      { path: paths.report, shouldExist: true } // data_analysis_report.txt should exist
-    ]);
-
-    // ACT: Read and parse both the log file and the report file
-    const logData = readAndParseLogFile();
-    const reportData = fs.readFileSync(paths.report, 'utf-8').split('\n').filter(line => line.trim());
-
-    // Convert log data into a set for efficient lookup
-    const logDataSet = new Set(logData);
-
-    // ASSERT: Compare each line in the report with the log data
-    reportData.forEach(line => {
-      const content = line.replace(/Line \d+: /, ''); // Remove line number prefix from report
-      if (!logDataSet.has(content)) {
-        // If a line in the report does not match the log data, log the mismatch and fail the test
-        console.log(`Mismatch found: ${line}`);
-        expect(true).toBe(false); // Fail the test
-      }
-    });
-
-    // If no mismatches are found, the validation is complete
-    console.log('Validation complete.');
-    expect(true).toBe(true); // Pass the test
-  });
+  // If no mismatches are found, the validation is complete
+  console.log('Validation complete.');
+  expect(true).toBe(true); // Pass the test
 });

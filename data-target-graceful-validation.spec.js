@@ -1,7 +1,8 @@
+// Import necessary modules from Playwright, Node.js, and child_process
 const { test, expect } = require("@playwright/test");
-const { exec } = require("child_process");
-const fs = require("fs");
-const path = require("path");
+const fs = require("fs"); // File system module to interact with files
+const path = require("path"); // Path module to handle and transform file paths
+const { exec } = require("child_process"); // Module to execute shell commands
 
 // Function to read the last N lines from a file
 const readLastLines = (filePath, numLines) => {
@@ -156,6 +157,6 @@ test.describe("App startup and verification", () => {
     // Cleanup: Remove the events.log file and the output directory
     // Uncomment the following lines if you wish to clean up after the test run
     fs.unlinkSync(logFilePath); // Remove events.log
-    fs.rmSync(outputDir, { recursive: true, force: true }); // Remove output directory and its contents
+    //fs.rmSync(outputDir, { recursive: true, force: true }); // Remove output directory and its contents
   });
 });

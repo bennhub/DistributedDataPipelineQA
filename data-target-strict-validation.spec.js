@@ -1,7 +1,8 @@
+// Import necessary modules from Playwright, Node.js, and child_process
 const { test, expect } = require("@playwright/test");
-const { exec } = require("child_process");
-const fs = require("fs");
-const path = require("path");
+const fs = require("fs"); // File system module to interact with files
+const path = require("path"); // Path module to handle and transform file paths
+const { exec } = require("child_process"); // Module to execute shell commands
 
 // Function to read the last N lines from a file
 // This utility function reads a file from the given filePath,
