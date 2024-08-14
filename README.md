@@ -46,9 +46,9 @@ Note that each test must be run individually, not as a complete suite
 
 - To run a test individually, use the following command in your terminal:
 
-- `npx playwright test tests/data-analysis-report.spec.js`
-- `npx playwright test tests/data-target-graceful-validation.spec.js`
-- `npx playwright test tests/data-target-strict-validation.spec.js`
+- `npx playwright test data-analysis-report.spec.js`
+- `npx playwright test data-target-graceful-validation.spec.js`
+- `npx playwright test data-target-strict-validation.spec.js`
  
 ## GitHub Actions Integration
 This project uses GitHub Actions for Continuous Integration (CI). The workflow is set up to run specific tests to validate the core functionality of the application.
