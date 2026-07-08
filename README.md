@@ -1,7 +1,14 @@
 # Data Validation Tests
 
 ## Overview
-This repository contains automated test scripts for validating the data analysis and target data processing of a Node.js application. The scripts are written using Playwright and cover various scenarios to ensure data integrity and proper functionality of the applications.
+This repository is a QA project for validating data integrity across a distributed pipeline: an `agent` process tails a source log, a `splitter` fans it out over TCP to one or more `target` processes, and each `target` writes the data it receives back to disk. That's a common shape for ETL and data-lake style systems (source -> processing/routing -> sink), and the risk is the same one those systems have: data can be dropped, duplicated, or reordered in transit without anything visibly crashing.
+
+The automated tests here (written in Playwright/TypeScript) drive the full pipeline end-to-end and validate that what lands at the target genuinely matches what the source produced, in both a "log and continue" mode and a "fail fast" mode, plus a check that a derived report stays consistent with its source data.
+
+## Tech Stack
+- Node.js / TypeScript (pipeline processes)
+- Playwright (test runner/assertions)
+- GitHub Actions (CI)
 
 ## The setup to test
 ![Alt text](https://raw.githubusercontent.com/bennhub/DistributedDataPipelineQA/main/images/_Setup.jpg)
@@ -18,23 +25,29 @@ This repository contains automated test scripts for validating the data analysis
 
 ### Prerequisites
 
-- Node.js (v12 or later)
+- Node.js (v18 or later)
 - npm (comes with Node.js)
 - Playwright
 
-### InstallationInstall Playwright:
+### Installation
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/bennhub/DistributedDataPipelineQA.git
    cd DistributedDataPipelineQA
+   ```
 2. Install dependencies:
    ```bash
    npm install
-2. Install Playwright:
+   ```
+3. Install Playwright browsers:
    ```bash
    npx playwright install
-4. Ensure you have the required services or scripts in place that generate the **events.log** file. This could be any application or set of processes that logs data to the file. 
+   ```
+4. Build the pipeline processes from TypeScript (also runs automatically before `npm run test:graceful`, `test:strict`, and `test:report`):
+   ```bash
+   npm run build
+   ```
 
 ### Running the Tests
 You can run the tests using Playwright. Note that each test must be run individually, not as a complete suite. This ensures that the environment is properly set up and cleaned up for each specific test. The suite includes environment setup, running the test, and cleanup:

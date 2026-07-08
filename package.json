@@ -1,14 +1,26 @@
 {
-  "name": "your-project",
+  "name": "distributed-data-pipeline-qa",
   "version": "1.0.0",
+  "description": "Playwright test suite validating data integrity across a distributed pipeline (agent -> splitter -> target) that streams and fans out log data over TCP.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bennhub/DistributedDataPipelineQA.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
-    "test": "npx playwright test"
+    "build": "tsc",
+    "test": "npx playwright test",
+    "test:graceful": "npm run build && npx playwright test data-target-graceful-validation.spec.js",
+    "test:strict": "npm run build && npx playwright test data-target-strict-validation.spec.js",
+    "test:report": "npm run build && npx playwright test data-analysis-report.spec.js"
   },
   "devDependencies": {
-    "@playwright/test": "^1.46.0",
-    "@types/node": "^22.1.0",
-    "playwright": "^1.46.0",
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^22.20.1",
+    "playwright": "^1.61.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.9.3"
   }
 }
